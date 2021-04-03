@@ -1,0 +1,17 @@
+#
+# .travis.yml
+#
+
+##
+# We need superuser permissions to run docker.
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build --tag fernandobasso/docker-travisci-deploy --file Dockerfile.dev .
+
+script:
+  - docker run -e CI=true fernandobasso/docker-travisci-deploy npm run test
+
