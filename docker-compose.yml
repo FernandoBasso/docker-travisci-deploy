@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  react-devserv:
+    # Use ‘docker dun -it dev1 npm run test’ to run tests inside this
+    # container.
+    container_name: dev1
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /home/node/app/node_modules
+      - .:/home/node/app
+
+  ##
+  # Since this solution is not perfect either (from the one that runs ‘exec
+  # -it’ on the running dev container), and it is not even interactive like
+  # the other, let's just leave it here as remainder that it is possible to
+  # use this approach.
+  #
+  # react-tests:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   volumes:
+  #     - /home/node/app/node_modules
+  #     - .:/home/node/app
+  #   command: ["npm", "run", "test"]

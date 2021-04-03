@@ -1,0 +1,44 @@
+##
+# This Dockerfile.dev file is used for development. Run it with:
+#
+#   $ docker build \
+#       --tag fernandobasso/react:latest \
+#       --file Dockerfile.dev .
+#
+# Run with:
+#
+#   $ docker run \
+#       -p 3000:3000 \
+#       -v /home/node/app/node_modules \
+#       -v "$PWD:/home/node/app" \
+#       fernandobasso/react:latest
+#
+# See the Makefile too!
+#
+
+FROM node:alpine
+
+USER node
+
+RUN mkdir -pv /home/node/app
+
+WORKDIR /home/node/app
+
+COPY --chown=node:node package.json .
+RUN npm install
+
+##
+# This line is not strictly necessary in DEV mode becase we have a volume (set
+# in ‘docker-compose.yml’) that maps back to our development files in hour
+# host machine. Yet, it is necessary to make a PRD image of our project.
+COPY --chown=node:node . .
+
+CMD ["npm", "run", "start"]
+
+#
+# Take a look at this for a possible solution to EACCESS errors:
+#
+# https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/learn/lecture/11437068#questions/14297316
+#
+
+# vim: set ft=dockerfile:
