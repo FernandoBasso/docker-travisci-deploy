@@ -31,6 +31,7 @@ RUN npm run build
 # PHASE #2
 #
 FROM nginx
+EXPOSE 80
 COPY --from=builder /home/node/app/build /usr/share/nginx/html
 #
 # nginx container has a default command to start the server. We don't need to
